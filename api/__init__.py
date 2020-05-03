@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask_restful import Api, abort
 
-api_bp = Blueprint(name='api', import_name=__name__)
+api_bp = Blueprint(name='api', import_name=__name__,url_prefix='/api')
+from .file import *
 
 api = Api(prefix="/api")
 

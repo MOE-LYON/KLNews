@@ -5,7 +5,7 @@ from . import db
 
 class News(db.Model):
     __tablename__="news"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     title = db.Column(db.String(80), nullable=False)
     body = db.Column(db.Text, nullable=False)
     pub_date = db.Column(db.DateTime, nullable=False,
@@ -22,7 +22,7 @@ class News(db.Model):
         return {
             'id':self.id,
             'title':self.title,
-            'publish_date':self.pub_date,
+            'publish_date':self.pub_date.__str__(),
             'cid':self.category_id,
             'front_image':self.front_image,
             'content':self.body
