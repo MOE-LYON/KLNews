@@ -17,8 +17,18 @@ class NewsResource(Resource):
         return Resp(data=news.to_json())
 
     def put(self, news_id):
+        args = create_parse.parse_args()
 
-        pass
+        news = News.query.get(news_id)
+        abort_if_obj_null(news)
+        args['body'] = args.pop("content")
+        args['category_id'] = args.pop("cid")
+        for prop in args:
+            if args.get(prop):
+                setattr(news,prop,args.get(prop))
+        db.session.commit()
+
+        return news.to_json()
 
     def delete(self, news_id):
 
@@ -31,6 +41,7 @@ class NewsResource(Resource):
             return Resp()
         except Exception as ex:
             db.session.rollback()
+            print(ex.args.__str__())
             return Resp(code=400, msg='delete error')
 
     def patch(self,news_id):
@@ -48,7 +59,7 @@ news_parse.add_argument('cid', type=int, default=0,location='args')
 create_parse = reqparse.RequestParser()
 create_parse.add_argument("cid",type=int,required=True)
 create_parse.add_argument("title",type=str,required=True)
-create_parse.add_argument('body',type=str,required=True)
+create_parse.add_argument('content',type=str,required=True)
 create_parse.add_argument('front_image',required=True)
 
 
