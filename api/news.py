@@ -28,7 +28,7 @@ class NewsResource(Resource):
                 setattr(news,prop,args.get(prop))
         db.session.commit()
 
-        return news.to_json()
+        return Resp(data=news.to_json())
 
     def delete(self, news_id):
 
